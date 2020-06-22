@@ -1,0 +1,129 @@
+<html>
+<head>
+  <!-- CSS only -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+<!--  <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.6/handlebars.min.js"></script>-->
+<script src="https://cdn.jsdelivr.net/npm/handlebars@4.7.6/dist/handlebars.min.js"></script>
+</head>
+<body>
+  <style>
+    .card-header.debit{
+      border-left:15px solid red;
+    }
+
+    .card-header.credit{
+      border-left: 15px solid green;
+    }
+  </style>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">Sample Kotlin + Typescript</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Home
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 text-center">
+        <h1 class="mt-5">Transaction History</h1>
+        <p class="lead"></p>
+        <ul class="list-unstyled">
+        </ul>
+        <div class="response-results" id="transactions"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+<script>
+fetch('http://localhost:8081/transaction').then((res) => {
+  res.json().then(function(data){
+    templateSrc = document.getElementById("transaction-teamplate").innerHTML;
+    template = Handlebars.compile(templateSrc);
+    compiled = template(data);
+    document.getElementById("transactions").innerHTML = compiled;
+  })
+})
+</script>
+
+
+<script type="text/x-handlebars-template" id="transaction-teamplate">
+<div id="accordion">
+  {{#each this}}
+  <div class="card">
+    <div class="card-header {{type}}" id="headingOne">
+      <h5 class="mb-0">
+        <button class="btn btn-link {{type}}" data-toggle="collapse" data-target="#collapse-{{id}}" aria-expanded="false" aria-controls="collapse-{{id}}">
+          {{type}}: ${{amount}}
+        </button>
+      </h5>
+    </div>
+
+    <div id="collapse-{{id}}" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+      <div class="card-body">
+        <!--Id: {{id}} <br>
+        effectiveDate: {{effectiveDate}}-->
+        <table class="table">
+          <thead>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row"></th>
+              <td>Transaction Id</td>
+              <td>{{id}}</td>
+              
+              
+
+            </tr>
+            <tr>
+              <th scope="row"></th>
+              <td>Date</td>
+              <td>{{effectiveDate}}</td>
+
+
+            </tr>
+            <tr>
+              <th scope="row"></th>
+              <td>Type</td>
+              <td>{{type}}</td>
+            </tr>
+            <tr>
+              <th scope="row"></th>
+              <td>Amount</td>
+              <td>{{amount}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  {{/each}}
+</div>
+</script>
+
+</body>
+</html>
+
+
+
+
+
